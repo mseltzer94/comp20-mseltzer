@@ -1,8 +1,9 @@
 //ms. pacman location
-var pacx = 8;
+var pacx = 30;
+var pacy = 30;
 var pacWidth = 30;
 var pacHeight = 30;
-var pacy = 5;
+
 var gameWidth = 698;
 var gameHeight = 203;
 var collision = false;
@@ -21,13 +22,13 @@ function init() {
     
     
     function xkey(evt){
-        collision = false;
         switch (evt.keyCode){
             //left arrow
             case 65:
                 //change color on collide edge
-                if (pacx - 10 < 0 || (pacx - 10) > (gameWidth - pacWidth) ){
-                    collision = true;
+                if (pacx - 10 <= 0 || (pacx - 10) >= (gameWidth - pacWidth) ){
+                    alert('AHHH');
+                    collision = !collision;
                 }
                     
                 pacx = ((pacx -10) > 0 ? pacx - 10:0);
@@ -35,23 +36,28 @@ function init() {
                 break;
             //right arrow
             case 68:
-                if (pacx + 10 < 0 || (pacx + 10) > (gameWidth - pacWidth) ){
-                    collision = true;
+                if (pacx + 10 <= 0 || (pacx + 10) >= (gameWidth - pacWidth) ){
+                    alert('AHHH');
+                    collision = !collision;
                 }
                 pacx = (pacx < canvas.width ? pacx + 10: 0);
                 pacx = ((pacx) < (gameWidth - pacWidth) ? pacx:(gameWidth - pacWidth));
                 break;
             //w arrow
             case 87:
-                if (pacy - 10 < 0 || (pacy - 10) > (gameHeight - pacHeight) ){
-                    collision = true;
+                if (pacy - 10 <= 0 || (pacy - 10) >= (gameHeight - pacHeight) ){
+                    alert('AHHH');
+                    collision = !collision;
                 }
                 pacy = ((pacy -10) > 0 ? pacy - 10:0);
                 pacy = ((pacy) < (gameHeight - pacHeight) ? pacy:(gameHeight - pacHeight));
                 break;
             //s arrow
             case 83:
-                if (pacy - 10 < 0 || (pacy - 10) > (gameHeight - pacHeight) ){
+                if (pacy + 10 <= 0 || (pacy +10) >= (gameHeight - pacHeight) ){
+                    alert('AHHH');
+                    collision = !collision;
+                }
                 pacy = (pacy < canvas.width ? pacy + 10: 0);
                 pacy = ((pacy) < (gameHeight - pacHeight) ?pacy:(gameHeight - pacHeight));
                 break;
@@ -59,20 +65,18 @@ function init() {
                 
         }
         draw();
-        }
     }
     
     function draw() {
         //draw different sprite on collision
+        ctx.drawImage(img, 320, 0, 465, 135, 0, 0, gameWidth, gameHeight);
+        
         if (collision) {
-            ctx.drawImage(img, 80, 0, 20, 20, pacx, pacy, 30, 30);
+            ctx.drawImage(img, 40, 80, 20, 20, pacx, pacy, 30, 30);
         }
         else{
-            ctx.drawImage(img, 320, 0, 465, 135, 0, 0, gameWidth, gameHeight);
+             ctx.drawImage(img, 80, 0, 20, 20, pacx, pacy, 30, 30);  
         }
-            
-                         
-        ctx.drawImage(img, 80, 40, 20, 20, pacx, pacy, 30, 30);
 }
     
     
