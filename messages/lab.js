@@ -1,7 +1,8 @@
 var req;
 function parse(){
   req = new XMLHttpRequest();
-    var url = "data.json";
+    //var url = "data.json";
+    var url = "http://messagehub.herokuapp.com/messages.json";
     req.open("GET", url, true);
     req.addEventListener("load", complete, false);
 
