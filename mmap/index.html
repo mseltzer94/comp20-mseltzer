@@ -28,9 +28,6 @@
                 navigator.geolocation.getCurrentPosition(function (pos) {
                     lat = pos.coords.latitude;
                     lng = pos.coords.longitude;
-                    //send location
-                    console.log("GOT IT! lon: " +lng +" lat: " + lat); 
-                    
                     // Create a marker	
                     myLatlng = new google.maps.LatLng(lat, lng);
                     var marker = new google.maps.Marker({
@@ -38,7 +35,7 @@
                         title: "My Location",
                     });
                     var infowindow =  new google.maps.InfoWindow({
-                            content: ""  });
+                            content: "My Location"});
                     google.maps.event.addListener(marker, 'click', function() {
                         infowindow.open(map,marker);
                     });
