@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Assignment 2</title>
+    <link rel="stylesheet" href="main.css">
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script>
+        var map;
+        function initialize() {
+          var mapOptions = {
+            zoom: 14,
+            center: new google.maps.LatLng(42.4, -71.11)
+          };
+          map = new google.maps.Map(document.getElementById('map-canvas'),
+              mapOptions);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+    <script>
+        lat = 0;
+        lng = 0;
+        var myLatlng;
+        function getLoc(){
+            if (navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(function (pos) {
+                    lat = pos.coords.latitude;
+                    lng = pos.coords.longitude;
+                    // Create a marker	
+                    myLatlng = new google.maps.LatLng(lat, lng);
+                    var marker = new google.maps.Marker({
+                        position: myLatlng,
+                        title: "My Location",
+                    });
+                    var infowindow =  new google.maps.InfoWindow({
+                            content: "My Location"});
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infowindow.open(map,marker);
+                    });
+                    marker.setMap(map);
+                    //send data
+                    var req = new XMLHttpRequest();
+                    var url = "https://secret-about-box.herokuapp.com/sendLocation";
+                    var params = "login=EvanConnelly&lat=" + lat + "&lng=" +lng;
+                    req.open("POST", url, true);
+                    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    req.onreadystatechange = function() {
+                        if(req.readyState == 4 && req.status == 200) {
+                            data = JSON.parse(req.responseText);
+                            
+                            for (var i = 0; i < data.length; i++){
+                                if (data[i].login != "EvanConnelly"){
+                                    
+                                    Latlng = new google.maps.LatLng(data[i].lat, data[i].lng);
+                                    var marker = new google.maps.Marker({
+                                        position: Latlng,
+                                        title: data[i].login
+                                    });
+                                    //haversine formula
+                                    r = 6371;
+                                    lod = (lng - data[i].lng)*(Math.PI/180);
+                                    lad = (lat - data[i].lat)*(Math.PI/180);
+                                    a = Math.sin(lad/2)*Math.sin(lad/2) +
+                                        Math.cos(lat*(Math.PI/180)/2)*Math.cos((data[i].lat*(Math.PI/180))/2)+
+                                        Math.sin(lod/2)*Math.sin(lod/2);
+                                    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                                    dist = r * c;
+                                    
+                                    var content = "Name: " + data[i].login + " Distance: " + dist;
+
+
+                                    var infowindow = new google.maps.InfoWindow();
+                                    google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+                                        return function() {
+                                            infowindow.setContent(content);
+                                            infowindow.open(map,marker);
+                                        };})(marker,content,infowindow));
+
+                                    marker.setMap(map);
+                                }
+                            }
+                           
+                        }
+                    }
+                    req.send(params);
+                });
+            }   
+            else {
+                console.log("Geolocation unsupported");
+            }
+        }
+    </script>
+      
+  </head>
+  <body onload="getLoc()">
+    <div id="map-canvas"></div>
+  </body>
+</html>
