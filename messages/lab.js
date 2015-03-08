@@ -1,6 +1,7 @@
 function parse(){
   var req = new XMLHttpRequest();
     var url = "data.json";
+    console.log("parsing");
     req.open("GET", url, true);
     if(req.readyState == 4 && req.status == 200) {
         console.log("HERE!");
