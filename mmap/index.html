@@ -31,11 +31,11 @@
                     //send location
                     console.log("GOT IT! lon: " +lng +" lat: " + lat); 
                     
-                    // Create a marker		
+                    // Create a marker	
                     myLatlng = new google.maps.LatLng(lat, lng);
                     var marker = new google.maps.Marker({
-                    position: myLatlng,
-                    title: "My Location"
+                        position: myLatlng,
+                        title: "My Location",
                     });
                     var infowindow =  new google.maps.InfoWindow({
                             content: ""  });
@@ -52,19 +52,28 @@
                     req.onreadystatechange = function() {
                         if(req.readyState == 4 && req.status == 200) {
                             data = JSON.parse(req.responseText);
+                            
                             for (var i = 0; i < data.length; i++){
-                                  // Create a marker		
-                                Latlng = new google.maps.LatLng(data[i].lat, data[i].lng);
-                                var marker = new google.maps.Marker({
-                                    position: Latlng,
-                                    title: data[i].login
-                                });
-                                var infowindow =  new google.maps.InfoWindow({
-                                        content: ""  });
-                                google.maps.event.addListener(marker, 'click', function() {
-                                    infowindow.open(map,marker);
-                                });
-                                marker.setMap(map);
+                                if (data[i].login != "EvanConnelly"){
+                                    
+                                    Latlng = new google.maps.LatLng(data[i].lat, data[i].lng);
+                                    var marker = new google.maps.Marker({
+                                        position: Latlng,
+                                        title: data[i].login
+                                    });
+
+                                    var content = "Name: " + data[i].login;
+
+
+                                    var infowindow = new google.maps.InfoWindow();
+                                    google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+                                        return function() {
+                                            infowindow.setContent(content);
+                                            infowindow.open(map,marker);
+                                        };})(marker,content,infowindow));
+
+                                    marker.setMap(map);
+                                }
                             }
                            
                         }
