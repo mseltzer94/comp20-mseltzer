@@ -2,7 +2,6 @@ var req;
 function parse(){
   req = new XMLHttpRequest();
     var url = "data.json";
-    console.log("parsing");
     req.open("GET", url, true);
     req.addEventListener("load", complete, false);
 
@@ -10,7 +9,6 @@ function parse(){
 }
 
 function complete(evt){
-         console.log("HERE!");
         data = JSON.parse(req.responseText);
          for (var i = 0; i < data.length; i++){
             var message= document.createElement("LI");
