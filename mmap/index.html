@@ -37,6 +37,11 @@
                     position: myLatlng,
                     title: "My Location"
                     });
+                    var infowindow =  new google.maps.InfoWindow({
+                            content: ""  });
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infowindow.open(map,marker);
+                    });
                     marker.setMap(map);
                     //send data
                     var req = new XMLHttpRequest();
@@ -47,7 +52,21 @@
                     req.onreadystatechange = function() {
                         if(req.readyState == 4 && req.status == 200) {
                             data = JSON.parse(req.responseText);
-                            console.log(data[0].login);
+                            for (var i = 0; i < data.length; i++){
+                                  // Create a marker		
+                                Latlng = new google.maps.LatLng(data[i].lat, data[i].lng);
+                                var marker = new google.maps.Marker({
+                                    position: Latlng,
+                                    title: data[i].login
+                                });
+                                var infowindow =  new google.maps.InfoWindow({
+                                        content: ""  });
+                                google.maps.event.addListener(marker, 'click', function() {
+                                    infowindow.open(map,marker);
+                                });
+                                marker.setMap(map);
+                            }
+                           
                         }
                     }
                     req.send(params);
