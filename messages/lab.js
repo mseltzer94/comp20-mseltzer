@@ -1,5 +1,6 @@
+var req;
 function parse(){
-  var req = new XMLHttpRequest();
+  req = new XMLHttpRequest();
     var url = "data.json";
     console.log("parsing");
     req.open("GET", url, true);
