@@ -13,4 +13,5 @@ function complete(evt){
         data = JSON.parse(req.responseText);
          for (var i = 0; i < data.length; i++){
             console.log(data[i]);   
+         }
 }
