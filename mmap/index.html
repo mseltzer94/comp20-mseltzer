@@ -40,9 +40,13 @@
                     });
                     var infowindow =  new google.maps.InfoWindow({
                             content: "My Location"});
+                    //open my location window
+                    infowindow.open(map,marker);
                     google.maps.event.addListener(marker, 'click', function() {
                         infowindow.open(map,marker);
                     });
+                    //center around my location
+                    map.setCenter(myLatlng);
                     marker.setMap(map);
                     //send data
                     var req = new XMLHttpRequest();
