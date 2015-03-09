@@ -31,6 +31,10 @@
                     // Create a marker	
                     myLatlng = new google.maps.LatLng(lat, lng);
                     var marker = new google.maps.Marker({
+                       icon: {
+                                      path: google.maps.SymbolPath.CIRCLE,
+                                      scale: 10
+                                    },
                         position: myLatlng,
                         title: "My Location",
                     });
