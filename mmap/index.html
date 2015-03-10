@@ -67,7 +67,7 @@
                                         title: data[i].login
                                     });
                                     //haversine formula
-                                    r = 6371;
+                                    r = 6371 * 0.621371; //miles
                                     lod = (lng - data[i].lng)*(Math.PI/180);
                                     lad = (lat - data[i].lat)*(Math.PI/180);
                                     a = Math.sin(lad/2)*Math.sin(lad/2) +
@@ -75,7 +75,7 @@
                                     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
                                     dist = r * c;
                                     
-                                    var content = "Name: " + data[i].login + " Distance: " + dist.toFixed(2) + " km";
+                                    var content = "Name: " + data[i].login + " Distance: " + dist.toFixed(2) + " miles";
 
 
                                     var infowindow = new google.maps.InfoWindow();
