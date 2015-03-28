@@ -6,7 +6,16 @@
 	<title>Captain's Log</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script>
-	  $("log").html + = "<p>hello<p>";
+        $('#msg').bind("enterKey",function(e){
+        alert("Enter");
+        });
+        $('#msg').keyup(function(e){
+        if(e.keyCode == 13)
+        {
+          $(this).trigger("enterKey");
+        }
+        });
+        $('#log').append("<p>d</p>");
 	</script>
 </head>
 
