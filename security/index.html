@@ -1,25 +1,121 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- Bootstrap -->
-        <link rel="stylesheet" type="text/css" href="bootstrap-3.3.4-dist/css/bootstrap.min.css"/>
+<head>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.4-dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
 
-    </head>
-        <nav class="navbar navbar-default">
-          <div class="container-fluid">
-            <div class="navbar-header">
-              <a class="navbar-brand" href="#">
-                 Michael Seltzer - Assignment 4
-              </a>
-                <ul class="nav nav-tabs">
-          <li role="presentation" class="active"><a href="#">Security Analysis</a></li>
-          <li role="presentation"><a href="#">Profile</a></li>
-          <li role="presentation"><a href="#">Messages</a></li>
-        </ul>
-            </div>
-          </div>
-        </nav>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+             Michael Seltzer - Assignment 4
+          </a>
+        </div>
+        <div class = "nav navbar-nav">
+            <ul class="nav nav-tabs">
+              <li role="presentation" class="active">
+                    <a href="#">Security Analysis</a></li>
+                <li role="presentation"><a href="#intro">Introduction</a></li>
+                <li role="presentation"><a href="#method">Methodology</a></li>
+                <li role="presentation"><a href="#abstract">Abstract</a></li>
+                <li role="presentation"><a href="#issues">Issues Found</a></li>
+                <li role="presentation"><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </div>
+      </div>
+    </nav>
+</head>
     <body>
+    <div class="container intro">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">Introduction</h3>
+      </div>
+      <div class="panel-body">
+        <p class="text">Security Analysis allows for developers to understand areas where an application may break and cause either a problem with user experience or even a potential hazard that could harm users. In this study, a student's server for a mapping program is tested for potential issues using the techniques described below.</p>
+          <p class="text">The server at address <a href="https://dry-inlet-5091.herokuapp.com">https://dry-inlet-5091.herokuapp.com</a> was tested for its security vulnerbilities. </p>
+      </div>
+    </div> 
+    </div>
+    <div class="container method">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">Methodology</h3>
+      </div>
+      <div class="panel-body">
+        <p class="text">Using POSTman request of the following types were used:</p>
+        <ul>
+            <li>XSS (cross site scripting)</li>
+            <li>Incorrect Input</li>
+            <li>XSS (cross site scripting)</li>
+          </ul>
+             <p class="text">Setting the input of logins, lat, lng fields (which are displayed on the homepage of the '/' page) to various values that cause server malfunctions (or items that break its contract) are concerns. </p>
+      </div>
+    </div> 
+    </div>
+        <div class="container method">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">Abstract</h3>
+      </div>
+      <div class="panel-body">
+        <p class="text">Using POSTman request of the following types were used:</p>
+        <ul>
+            <li>XSS (cross site scripting)</li>
+            <li>Incorrect Input</li>
+            <li>XSS (cross site scripting)</li>
+          </ul>
+      </div>
+    </div> 
+    </div>
+        <div class="container method">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">Issues Found</h3>
+      </div>
+      <div class="panel-body">
+        <p class="text">Using POSTman request of the following types were used:</p>
+        <ul>
+            <li>Issue 1: Input in login name
+                <ul>
+                    <li>Location: "/sendlocation" page, result on "/" page</li>
+                    <li>Severity: High
+                        Content on page can be modified in way not intended by developer, any application that relies on the database and uses the resulting JSON may also have bad data and thus cause a XSS on their site.
+                    </li>
+                    <li>Description of issue:
+                        Using the POSTMAN utility, a script alert was sent causing an alert popup to be displayed
+                                <img class="img-responsive" src="issue1post.png" alt="XSS in login name">
+                        <p>The POSTMAN request</p>
+                                                      <img class="img-responsive" src="issue1ex.png" alt="XSS in login name">
+                        <p>The result on "/" page</p>
+                        <img class="img-responsive" src="issue1ex.png" alt="XSS in login name">
+                        <p>The result on a mapping utility using the server as an API</p>
+                    </li>
+                </ul>
+
+            </li>
+            <li>Incorrect Input</li>
+            <li>XSS (cross site scripting)</li>
+          </ul>
+      </div>
+    </div> 
+    </div>
+       <div class="container method">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">Conclusion</h3>
+      </div>
+      <div class="panel-body">
+        <p class="text">Using POSTman request of the following types were used:</p>
+        <ul>
+            <li>XSS (cross site scripting)</li>
+            <li>Incorrect Input</li>
+            <li>XSS (cross site scripting)</li>
+          </ul>
+      </div>
+    </div> 
+    </div>
         
     
     </body>
