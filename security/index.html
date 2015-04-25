@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.4-dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+             Michael Seltzer - Assignment 4
+          </a>
+        </div>
+        <div class = "nav navbar-nav">
+            <ul class="nav nav-tabs">
+              <li role="presentation" class="active">
+                    <a href="#">Security Analysis</a></li>
+                <li role="presentation"><a href="#intro">Introduction</a></li>
+                <li role="presentation"><a href="#method">Methodology</a></li>
+                <li role="presentation"><a href="#abstract">Abstract</a></li>
+                <li role="presentation"><a href="#findings">Issues Found</a></li>
+                <li role="presentation"><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </div>
+      </div>
+    </nav>
+</head>
+    <body>
+    <div class="container" id="intro" >
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">Introduction</h3>
+      </div>
+      <div class="panel-body">
+        <p class="text">Security Analysis allows for developers to understand areas where an application may break and cause either a problem with user experience or even a potential hazard that could harm users. In this study, a student's server for a mapping program is tested for potential issues using the techniques described below.</p>
+          <p class="text">The server at address <a href="https://dry-inlet-5091.herokuapp.com">https://dry-inlet-5091.herokuapp.com</a> was tested for its security vulnerbilities.</p>
+      </div>
+    </div> 
+    </div>
+    <div class="container" id="method">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">Methodology</h3>
+      </div>
+      <div class="panel-body">
+        <p class="text">Using POSTMAN request and an HTML document that uses the API, various attempt were made using the "blackbox" method where the source code is not tested, adn then the "whitebox" method to look at source code for further oppurtunites. Setting the input of logins, lat, lng fields (which are displayed on the homepage of the '/' page) to various values that cause server malfunctions (or items that break its contract) are specific concerns as detailed below. </p>
+      </div>
+    </div> 
+    </div>
+        <div id="findings"  class="container">
+    <div class="panel panel-primary" id="abstract" >
+      <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">Abstract of Findings</h3>
+      </div>
+      <div class="panel-body">
+        <p class="text">The errors outlined in the section below mostly result from server side code allowing user input to be entered into the database as typed. This causes problems because user input is inherently unverified and as with anything in computer science, if it has the possibility of breaking, someone will break it. Because the server is used as an API, the database is especially important (as user input may affect the websites that use the API as well as the server itself).</p>
+      </div>
+    </div> 
+    </div>
+        <div class="container method">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">Issues Found</h3>
+      </div>
+      <div class="panel-body">
+        <p class="text">Using POSTman request of the following types were used:</p>
+        <ul>
+            <li>Issue 1: Input in login name
+                <ul>
+                    <li>Location: "/sendlocation" page, result on "/" page</li>
+                    <li>Severity: High
+                        <p>Content on page can be modified in way not intended by developer, any application that relies on the database and uses the resulting JSON may also have bad data and thus cause a XSS on their site.</p>
+                    </li>
+                    <li>Description of issue:
+                        Using the POSTMAN utility, a script alert was sent causing an alert popup to be displayed
+                                <img class="img-responsive" src="issue1post.png" alt="XSS in login name">
+                        <p>The POSTMAN request</p>
+                                                      <img class="img-responsive" src="issue1ex.png" alt="XSS in login name">
+                        <p>The result on "/" page</p>
+                        <img class="img-responsive" src="issue1mmap.png" alt="XSS in login name">
+                        <p>The result on a mapping utility using the server as an API - name is an empty field under current flaw</p>
+                        </li>
+                     <li>Resolution: to prevent XSS from occuring, NEVER TRUST USER INPUT. Convert all characters that are not regular to html characters</li>
+                    
+                </ul>
+
+            </li>
+            <li>Issue 2: MongoDB Search Code Execution
+                <ul>
+                    <li>Location: "/location.json" page</li>
+                    <li>Severity: Medium
+                        <p>Requests can be made by altering the field "login" when requesting a specific username. Although many mongo commands are blocked by the express framework used in the server, the [$gt] command is not.</p>
+                    </li>
+                    <li>Description of issue:
+                        Using the POSTMAN utility, the [$gt] term was appended to the login request param causing all data to be returned. This is not the intended developer response, where the location.json only is supposed to return one name. 
+                                <img class="img-responsive" src="issue2post.png" alt="XSS in login name">
+                        <p>The POSTMAN request</p>
+                    </li>
+            <li>Resolution: sanatize requests before parsing, use express utilities to disable commands like this from being available in a user entry. Although here the data shown is not harmful, this could allow access to data that is meant to be private.  </li>
+ </ul>
+    <li>Issue 3: MongoDB Code (Internal Error)
+                <ul>
+                    <li>Location: "/location.json" page</li>
+                    <li>Severity: High
+                       <p>Using the login field, requests can be made that cause the server to have errors. Because not all fields are checked, the resulting response from mongo may cause an error (due to the code depending on data being returned in a specific fashion - something which is not always invariant as the user may input arguably malicious code).</p>
+                    </li>
+                    <li>Description of issue:
+                        Using the POSTMAN utility, the [$nin] term was appended to the login request param causing all data not matching data in array to be displayed. Because this data is then coverted to an array (which the response may not be), an interal server error as shown below can be found. 
+                                <img class="img-responsive" src="issue3post.png" alt="XSS in login name">
+                        <p>The POSTMAN request</p>
+                    </li>
+            <li>Resolution: rewrite function locations.json to not rely on data being in a specific format - ie the code should not expect that an array is necesarily returned from mongo. Although one could also sanatize the data (and as shown in issue 2, one really should), this error shows another underlying assumption, which need not be assumed. By catching errors using error handling built into javascript, the issue can be resolved. In the code: coll.find({login:login}).toArray, the code must be restructured to catch errors before that command is sent and santatize the login string (login) sent to mongodb. Express manipulates this command with a [$nin] to look for all elements not in the array (ie: any hidden fields, or things that are specifically NOT in the array).   </li>
+ </ul>
+  </ul>
+      </div>
+    </div> 
+    </div>
+       <div id="conclusion" class="container">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title" id="panel-title">Conclusion</h3>
+      </div>
+      <div class="panel-body">
+        <p class="text">The issues as described create an API that from a security point of view is problematic. The issues should be resolved as they are not operationally difficult and mostly rely on the input functions for the API. Thus in this situation, bolstering the security and creating a server that treats input with a grain of salt is crucial for the API remaining functional and trustworthy.</p>
+          </ul>
+      </div>
+    </div> 
+    </div>
+        
+    
+    </body>
+
+</html>
+
